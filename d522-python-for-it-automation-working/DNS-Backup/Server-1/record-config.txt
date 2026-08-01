@@ -1,0 +1,109 @@
+======================================================================
+DNS CONFIGURATION BACKUP - DNS1 (10.10.10.10)
+======================================================================
+
+--- /etc/bind/named.conf.local ---
+
+zone "d522.wgu.internal" {
+    type master;
+    file "/etc/bind/zones/db.d522.wgu.internal";
+    allow-transfer { 10.10.10.20; };
+};
+
+zone "10.10.10.in-addr.arpa" {
+    type master;
+    file "/etc/bind/zones/db.10.10.10";
+    allow-transfer { 10.10.10.20; };
+};
+
+zone "20.168.192.in-addr.arpa" {
+    type master;
+    file "/etc/bind/zones/db.20.168.192";
+    allow-transfer { 10.10.10.20; };
+};
+
+zone "30.168.192.in-addr.arpa" {
+    type master;
+    file "/etc/bind/zones/db.30.168.192";
+    allow-transfer { 10.10.10.20; };
+};
+
+----------------------------------------------------------------------
+--- Zone: d522.wgu.internal  (file: /etc/bind/zones/db.d522.wgu.internal) ---
+
+$TTL    86400
+@   IN  SOA ns1.d522.wgu.internal. admin.d522.wgu.internal. (
+        2026040301 ; Serial
+        3600       ; Refresh
+        900        ; Retry
+        604800     ; Expire
+        86400 )    ; Minimum TTL
+
+; Name servers
+@       IN  NS      ns1.d522.wgu.internal.
+@       IN  NS      ns2.d522.wgu.internal.
+
+; A records
+ns1      IN  A       10.10.10.10
+ns2      IN  A       10.10.10.20
+api      IN  A       10.10.10.200
+db       IN  A       10.10.10.210
+smtp     IN  A       10.10.10.100
+mail     IN  A       10.10.10.100
+inbox    IN  A       10.10.10.100
+helpdesk IN  A       10.10.10.200
+svr1     IN  A       192.168.20.210
+svr2     IN  A       192.168.30.210
+
+----------------------------------------------------------------------
+--- Zone: 10.10.10.in-addr.arpa  (file: /etc/bind/zones/db.10.10.10) ---
+
+$TTL    604800
+@       IN      SOA     ns1.d522.wgu.internal. admin.d522.wgu.internal. (
+                        2         ; Serial
+                        604800    ; Refresh
+                        86400     ; Retry
+                        2419200   ; Expire
+                        604800 )  ; Negative Cache TTL
+
+        IN      NS      ns1.d522.wgu.internal.
+        IN      NS      ns2.d522.wgu.internal.
+
+10      IN      PTR     ns1.d522.wgu.internal.
+20      IN      PTR     ns2.d522.wgu.internal.
+210     IN      PTR     db.d522.wgu.internal.
+200     IN      PTR     api.d522.wgu.internal.
+100     IN      PTR     smtp.d522.wgu.internal.
+
+----------------------------------------------------------------------
+--- Zone: 20.168.192.in-addr.arpa  (file: /etc/bind/zones/db.20.168.192) ---
+
+$TTL    604800
+@       IN      SOA     ns1.d522.wgu.internal. admin.d522.wgu.internal. (
+                        2         ; Serial
+                        604800    ; Refresh
+                        86400     ; Retry
+                        2419200   ; Expire
+                        604800 )  ; Negative Cache TTL
+
+        IN      NS      ns1.d522.wgu.internal.
+        IN      NS      ns2.d522.wgu.internal.
+
+210     IN      PTR     svr1.d522.wgu.internal.
+
+----------------------------------------------------------------------
+--- Zone: 30.168.192.in-addr.arpa  (file: /etc/bind/zones/db.30.168.192) ---
+
+$TTL    604800
+@       IN      SOA     ns1.d522.wgu.internal. admin.d522.wgu.internal. (
+                        2         ; Serial
+                        604800    ; Refresh
+                        86400     ; Retry
+                        2419200   ; Expire
+                        604800 )  ; Negative Cache TTL
+
+        IN      NS      ns1.d522.wgu.internal.
+        IN      NS      ns2.d522.wgu.internal.
+
+210     IN      PTR     svr2.d522.wgu.internal.
+
